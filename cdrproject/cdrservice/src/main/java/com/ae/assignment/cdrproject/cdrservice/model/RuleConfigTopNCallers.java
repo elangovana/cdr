@@ -17,9 +17,8 @@ import org.eclipse.persistence.nosql.annotations.NoSql;
 public class RuleConfigTopNCallers extends RuleConfigBase {
 
 	public static final String TEMPLATE_NAME = "RuleTemplateTopNCallers";
-	
-	public RuleConfigTopNCallers()
-	{
+
+	public RuleConfigTopNCallers() {
 		setRuleTemplateName(TEMPLATE_NAME);
 	}
 
@@ -40,7 +39,7 @@ public class RuleConfigTopNCallers extends RuleConfigBase {
 	public Boolean isActive;
 
 	@Basic
-	public int topNCallers;
+	public float topCallersPercentage;
 
 	@Basic
 	public int calculationPeriodInDays;
@@ -73,12 +72,12 @@ public class RuleConfigTopNCallers extends RuleConfigBase {
 		this.isActive = isActive;
 	}
 
-	public int getTopNCallers() {
-		return topNCallers;
+	public float getTopCallersPercentage() {
+		return topCallersPercentage;
 	}
 
-	public void setTopNCallers(int topNCallers) {
-		this.topNCallers = topNCallers;
+	public void setTopCallersPercentage(float topCallersPercentage) {
+		this.topCallersPercentage = topCallersPercentage;
 	}
 
 	public int getCalculationPeriodInDays() {
@@ -99,8 +98,7 @@ public class RuleConfigTopNCallers extends RuleConfigBase {
 
 	@Override
 	public String getRuleName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.ruleName;
 	}
 
 	@Override
@@ -115,8 +113,7 @@ public class RuleConfigTopNCallers extends RuleConfigBase {
 
 	@Override
 	protected void setRuleTemplateName(String ruleTemplateName) {
-		// TODO Auto-generated method stub
-
+		this.ruleTemplateName = ruleTemplateName;
 	}
 
 }

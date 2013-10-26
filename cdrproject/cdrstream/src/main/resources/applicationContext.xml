@@ -122,12 +122,16 @@
 	
 	<bean id="topNCallersRuleEvaluator"
 		class="com.ae.assignment.cdrproject.cdrstream.rulesEvaluator.TopNCallersRuleEvaluator">
-		<property name="topKItems">
-		<ref bean="topKFrequentAlgorithm"/>
+		<property name="lossyCountAlgorithm">
+		<ref bean="lossyCountAlgorithm"/>
 		</property>
 	</bean>
 
 	<bean name="topKFrequentAlgorithm" class="com.ae.assignment.cdrproject.cdrstream.algorithm.TopKFrequentAlgorithm">
+	
+	</bean>
+	
+	<bean name="lossyCountAlgorithm" class="com.ae.assignment.cdrproject.cdrstream.algorithm.LossyCountAlgorithm">
 	
 	</bean>
 	

@@ -30,9 +30,9 @@
 		</div>
 
 		<div id="content-body">
-			<div id="primary-nav">Top N</div>
+			<div id="primary-nav">Top N % </div>
 			<div id="secondary-nav">
-				<s:property value="ruleConfigTopNCallers.topNCallers" />
+				<s:property value="ruleConfigTopNCallers.topCallersPercentage" />
 			</div>
 		</div>
 

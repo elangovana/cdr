@@ -6,30 +6,38 @@ import java.util.HashMap;
 import backtype.storm.tuple.Tuple;
 
 import com.ae.assignment.cdrproject.cdrservice.model.RuleConfigTopNCallers;
-import com.ae.assignment.cdrproject.cdrstream.algorithm.ITopKItems;
+import com.ae.assignment.cdrproject.cdrstream.algorithm.IFrequencyCalculator;
 import com.ae.assignment.cdrproject.cdrstream.bolt.CDRFieldNames;
 
 public class TopNCallersRuleEvaluator implements
 		IRuleEvaluator<RuleConfigTopNCallers, HashMap<String, Integer>>,
 		Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	RuleConfigTopNCallers ruleConfig;
 
-	ITopKItems<String> topKItems;
+	IFrequencyCalculator<String> lossyCountAlgorithm;
 
 	public TopNCallersRuleEvaluator(RuleConfigTopNCallers ruleConfig) {
 
 		this.ruleConfig = ruleConfig;
 	}
 	
+	public void setLossyCountAlgorithm(
+			IFrequencyCalculator<String> lossyCountAlgorithm) {
+		this.lossyCountAlgorithm = lossyCountAlgorithm;
+	}
+
 	public TopNCallersRuleEvaluator() {
 
 		this(null);
 	}
 
-	public void setTopKItems(ITopKItems<String> topKItems) {
-		this.topKItems = topKItems;
-	}
+
 
 	@Override
 	public boolean add(Tuple rec) {
@@ -39,20 +47,20 @@ public class TopNCallersRuleEvaluator implements
 		String callingNumber = rec
 				.getStringByField(CDRFieldNames.callingNumber);
 
-		topKItems.add(callingNumber);
+		lossyCountAlgorithm.add(callingNumber);
 
 		return true;
 	}
 
 	@Override
 	public HashMap<String, Integer> popCurrentPromos() {
-		return topKItems.getCurrentTopItems();
+		return lossyCountAlgorithm.getCurrentItemsFrequencies();
 	}
 
 	@Override
 	public void setRuleConfig(RuleConfigTopNCallers config) {
 		ruleConfig = config;
-		topKItems.setTopNCount(ruleConfig.topNCallers);
+		lossyCountAlgorithm.setSupportThreshold(config.getTopCallersPercentage());
 	}
 
 }

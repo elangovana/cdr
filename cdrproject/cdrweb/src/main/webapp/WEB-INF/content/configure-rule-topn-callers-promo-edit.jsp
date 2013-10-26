@@ -20,8 +20,8 @@
 
 		<s:textarea label="Promo Text" name="ruleConfigTopNCallers.promo" />
 
-		<s:textfield label="Top N Callers"
-			name="ruleConfigTopNCallers.topNCallers" />
+		<s:textfield label="Top N % Callers"
+			name="ruleConfigTopNCallers.topCallersPercentage" />
 
 		<s:textfield label="Total Period in Days"
 			name="ruleConfigTopNCallers.calculationPeriodInDays" />

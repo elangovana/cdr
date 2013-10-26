@@ -59,7 +59,7 @@ public class ServiceRuleConfigTopNCallersPromoImpl implements
 			result.isActive = true;
 			result.ruleName = ruleName;
 			result.promo = "Default Top N Rule";
-			result.topNCallers = 10;
+			result.topCallersPercentage = 80.0f/100.0f;
 			result.calculationPeriodInDays = 10;
 		}
 		return result;
