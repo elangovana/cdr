@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+
+
+
+	<context:property-placeholder location="classpath*:/config.properties" />
+
+	<bean id="dbProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="config.properties" />
+	</bean>
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.ae.assignment.cdrproject.cdrservice" />
+
+	<bean id="fileNamesSpout"
+		class="com.ae.assignment.cdrproject.cdrstream.spout.FileNamesSpout"
+		scope="prototype">
+		<constructor-arg name="baseSearchPath">
+			<value>${CDRFiles.BaseDirectory}</value>
+		</constructor-arg>
+		<constructor-arg name="filesSearchPattern">
+			<value>${CDRFiles.FilesExtension}</value>
+		</constructor-arg>
+		<constructor-arg name="workingDirectory">
+			<value>${CDRFiles.WorkingDirectory}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="droppedCallsRuleEvaluatorBolt"
+		class="com.ae.assignment.cdrproject.cdrstream.bolt.DroppedCallsRuleEvaluatorBolt"
+		scope="prototype">
+		<property name="ruleEvaluator">
+			<ref bean="droppedCallsRuleEvaluator" />
+		</property>
+		<property name="ruleConfigService">
+			<ref bean="serviceRuleConfigDroppedCallsPromoImpl" />
+		</property>
+		<property name="repository">
+			<ref bean="repositoryStatsCallPromoImpl" />
+		</property>
+		<constructor-arg name="emitFrequencyInSec">
+			<value>${Rule.FlushIntervalInSec}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="talkTimeRuleEvaluatorBolt"
+		class="com.ae.assignment.cdrproject.cdrstream.bolt.TalkTimeRuleEvaluatorBolt"
+		scope="prototype">
+		<property name="ruleEvaluator">
+			<ref bean="talkTimeRuleEvaluator" />
+		</property>
+		<property name="ruleConfigService">
+			<ref bean="serviceRuleConfigTalkTimePromoImpl" />
+		</property>
+		<property name="repository">
+			<ref bean="repositoryStatsCallPromoImpl" />
+		</property>
+		<constructor-arg name="emitFrequencyInSec">
+			<value>${Rule.FlushIntervalInSec}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="rulesSpout" class="com.ae.assignment.cdrproject.cdrstream.spout.RulesSpout">
+		<constructor-arg name="pollIntervalInMinutes">
+			<value>${Rule.NewRulePollIntervalInMins}</value>
+		</constructor-arg>
+		<property name="rulesList">
+			<list>
+				<ref bean="serviceRuleConfigDroppedCallsPromoImpl"></ref>
+				<ref bean="serviceRuleConfigTalkTimePromoImpl"></ref>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="cDRWorkloadGen"
+		class="com.ae.assignment.cdrproject.cdrstream.bolt.CDRWorkloadGen">
+		<constructor-arg name="emitSleepTimeInMillSec">
+			<value>${CDRWorkLoadGen.EmitSleepTimeInMillSec}</value>
+		</constructor-arg>
+		<property name="logService">
+
+			<ref bean="serviceLogImpl"></ref>
+
+		</property>
+	</bean>
+
+
+	<bean id="topNCallersRuleEvaluatorBolt"
+		class="com.ae.assignment.cdrproject.cdrstream.bolt.TopNCallersRuleEvaluatorBolt"
+		scope="prototype">
+		<property name="ruleEvaluator">
+			<ref bean="topNCallersRuleEvaluator" />
+		</property>
+		<property name="ruleConfigService">
+			<ref bean="serviceRuleConfigTopNCallersPromoImpl" />
+		</property>
+		<property name="repository">
+			<ref bean="repositoryStatsCallPromoImpl" />
+		</property>
+		
+		<constructor-arg name="emitFrequencyInSec">
+			<value>${Rule.FlushIntervalInSec}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="droppedCallsRuleEvaluator"
+		class="com.ae.assignment.cdrproject.cdrstream.rulesEvaluator.DroppedCallsRuleEvaluator">
+
+	</bean>
+
+	<bean id="talkTimeRuleEvaluator"
+		class="com.ae.assignment.cdrproject.cdrstream.rulesEvaluator.TalkTimeRuleEvaluator">
+	</bean>
+	
+	<bean id="topNCallersRuleEvaluator"
+		class="com.ae.assignment.cdrproject.cdrstream.rulesEvaluator.TopNCallersRuleEvaluator">
+		<property name="topKItems">
+		<ref bean="topKFrequentAlgorithm"/>
+		</property>
+	</bean>
+
+	<bean name="topKFrequentAlgorithm" class="com.ae.assignment.cdrproject.cdrstream.algorithm.TopKFrequentAlgorithm">
+	
+	</bean>
+	
+
+</beans>
+
+
+

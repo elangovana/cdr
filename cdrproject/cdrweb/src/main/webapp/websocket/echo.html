@@ -1,0 +1,209 @@
+<html>
+<head>
+<script>
+	/*
+	 * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+	 *
+	 * Copyright (c) 2010-2013 Oracle and/or its affiliates. All rights reserved.
+	 *
+	 * The contents of this file are subject to the terms of either the GNU
+	 * General Public License Version 2 only ("GPL") or the Common Development
+	 * and Distribution License("CDDL") (collectively, the "License").  You
+	 * may not use this file except in compliance with the License.  You can
+	 * obtain a copy of the License at
+	 * https://glassfish.dev.java.net/public/CDDL+GPL_1_1.html
+	 * or packager/legal/LICENSE.txt.  See the License for the specific
+	 * language governing permissions and limitations under the License.
+	 *
+	 * When distributing the software, include this License Header Notice in each
+	 * file and include the License file at packager/legal/LICENSE.txt.
+	 *
+	 * GPL Classpath Exception:
+	 * Oracle designates this particular file as subject to the "Classpath"
+	 * exception as provided by Oracle in the GPL Version 2 section of the License
+	 * file that accompanied this code.
+	 *
+	 * Modifications:
+	 * If applicable, add the following below the License Header, with the fields
+	 * enclosed by brackets [] replaced by your own identifying information:
+	 * "Portions Copyright [year] [name of copyright owner]"
+	 *
+	 * Contributor(s):
+	 * If you wish your version of this file to be governed by only the CDDL or
+	 * only the GPL Version 2, indicate your decision by adding "[Contributor]
+	 * elects to include this software in this distribution under the [CDDL or GPL
+	 * Version 2] license."  If you don't indicate a single choice of license, a
+	 * recipient has the option to distribute your version of this file under
+	 * either the CDDL, the GPL Version 2 or to extend the choice of license to
+	 * its licensees as provided above.  However, if you add GPL Version 2 code
+	 * and therefore, elected the GPL Version 2 license, then the option applies
+	 * only if the new code is made subject to such option by the copyright
+	 * holder.
+	 */
+
+	var websocket;
+	var user;
+	var output;
+	var isLogin;
+	var isLogout;
+
+	function init() {
+		user = null;
+		output = document.getElementById("display");
+		document.getElementById("login-name").focus();
+	}
+
+	function getWSUri() {
+		return "ws://"
+				+ (document.location.hostname == "" ? "localhost"
+						: document.location.hostname)
+				+ ":"
+				+ (document.location.port == "" ? "8080"
+						: document.location.port) + "/cdrweb/websocket/chat";
+	}
+
+	function login() {
+		var loginName = document.getElementById("login-name");
+		user = loginName.value;
+		if (!(user.length > 0)) {
+			document.getElementById('system-message').style.color = 'red';
+			loginName.focus();
+			return;
+		} else {
+			isLogin = true;
+			connectWebSocket();
+		}
+	}
+
+	function logout() {
+		isLogout = true;
+		sendWebSocketMessage('o');
+	}
+
+	function connectWebSocket() {
+		if (websocket != null) {
+			closeWebSocket();
+		}
+
+		websocket = new WebSocket(getWSUri());
+		websocket.onopen = function(evt) {
+			sendWebSocketMessage('i');
+		};
+
+		websocket.onmessage = function(evt) {
+			var data = evt.data;
+			writeMessage(data);
+
+			if (isLogin) {
+				isLogin = false;
+				switchToChat();
+			} else if (isLogout) {
+				isLogout = false;
+				switchToLogin();
+			}
+
+		};
+
+		websocket.onerror = function(evt) {
+			isLogin = false;
+			isLogout = false;
+			writeColorMessage("red", "Error: " + evt.data);
+		}
+	}
+
+	function switchToChat() {
+		document.getElementById('system-message').style.color = '#2d2b3d';
+		document.getElementById('system-message').innerHTML = user + ":";
+
+		document.getElementById('login-button').disabled = true;
+		document.getElementById('login-form').style.display = 'none';
+		document.getElementById('message-form').style.display = '';
+		document.getElementById('message').value = "";
+		document.getElementById('message').focus();
+	}
+
+	function switchToLogin() {
+		document.getElementById('system-message').style.color = '#2d2b3d';
+		document.getElementById('system-message').innerHTML = "Please input your name:";
+
+		document.getElementById('login-button').disabled = false;
+		document.getElementById('login-form').style.display = '';
+		document.getElementById('message-form').style.display = 'none';
+		document.getElementById('login-name').value = "";
+		document.getElementById('login-form').focus();
+	}
+
+	function sendMessage() {
+		sendWebSocketMessage('c');
+		document.getElementById('message').value = "";
+	}
+
+	function sendWebSocketMessage(type) { // websocket is not null
+		var msg = document.getElementById('message').value;
+		websocket.send(type + ":" + user + ":" + msg);
+	}
+
+	function writeMessage(message) {
+		writeColorMessage("black", message);
+	}
+
+	function writeColorMessage(color, message) {
+		var p = document.createElement("p");
+		p.style.wordWrap = "break-word";
+		p.style.color = color;
+		p.innerHTML = message.replace(':', ":<br/>");
+		output.appendChild(p);
+	}
+
+	function cleanup() {
+		closeWebSocket();
+
+		isLogin = false;
+		isLogout = false;
+	}
+
+	function closeWebSocket() {
+		if (websocket != null) {
+			websocket.close();
+			websocket = null;
+		}
+	}
+
+	window.addEventListener("load", init, false);
+	window.addEventListener("unload", cleanup, false);
+</script>
+</head>
+<body>
+	<div id="container">
+		<div id="container-inner">
+			<div id="header">
+				<h1>Glassfish Chat</h1>
+			</div>
+			<div id="main">
+				<div id="display"></div>
+				<div id="form">
+					<div id="system-message">Please input your name:</div>
+					<div id="login-form">
+						<input id="login-name" type="text"
+							onkeydown="if (event.keyCode == 13) { login(); return false; }" />
+						<br /> <input id="login-button" type="button" value="Login"
+							onclick="login()" />
+					</div>
+					<div id="message-form" style="display: none;">
+						<div>
+							<textarea id="message" name="message" rows="2" cols="40"
+								onkeydown="if (event.keyCode == 13) { sendMessage(); return false; }"></textarea>
+							<br /> <input id="post-button" type="button"
+								value="Post Message" onclick="sendMessage()" /> <input
+								id="logout-button" type="button" value="Logout"
+								onclick="logout()" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<iframe id="comet-frame" style="display: none;"></iframe>
+</body>
+
+</html>

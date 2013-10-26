@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.action.excludePattern" value="/websocket/*" />
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+
+	<package name="myPackage" extends="struts-default">
+
+		<default-action-ref name="index" />
+
+
+		<action name="reports-promo-calls-lastn-retrieveReportData"
+			class="com.ae.assignment.cdrproject.cdrweb.action.ReportsPromoCallsAction"
+			method="retrieveReportData">
+
+			<result name="success" type="stream">
+				<param name="contentType">text/x-json</param>
+				<param name="inputName">jsonOutput</param>
+
+			</result>
+		</action>
+
+		<!-- <action name="DroppedCallsPromoRule" class="com.ae.assignment.cdrproject.cdrweb.ConfigureDroppedCallsPromoRuleAction"> -->
+		<!-- <result >/jsp/ConfigureDroppedCallsPromoRule.jsp</result> -->
+		<!-- </action> -->
+	</package>
+
+	<package name="example" extends="json-default">
+
+	</package>
+
+</struts>

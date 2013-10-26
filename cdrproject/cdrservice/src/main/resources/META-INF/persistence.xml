@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+	<persistence-unit name="cdr" transaction-type="RESOURCE_LOCAL">
+
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>com.ae.assignment.cdrproject.cdrservice.model.RuleConfigDroppedCalls </class>
+		<class>com.ae.assignment.cdrproject.cdrservice.model.RuleConfigTalkTime </class>
+		<class>com.ae.assignment.cdrproject.cdrservice.model.RuleConfigTopNCallers </class>
+		<class>com.ae.assignment.cdrproject.cdrservice.model.FileLog </class>
+		<class>com.ae.assignment.cdrproject.cdrservice.model.StatsCallPromo </class>
+		<properties>
+			<property name="eclipselink.target-database"
+				value="org.eclipse.persistence.nosql.adapters.mongo.MongoPlatform" />
+			<property name="eclipselink.nosql.connection-spec"
+				value="org.eclipse.persistence.nosql.adapters.mongo.MongoConnectionSpec" />
+
+			<property name="eclipselink.nosql.property.mongo.port"
+				value="27018" />
+			<property name="eclipselink.nosql.property.mongo.host"
+				value="localhost" />
+			<property name="eclipselink.nosql.property.mongo.db" value="mydb" />
+
+			<property name="eclipselink.logging.timestamp" value="false" />
+			<property name="eclipselink.logging.thread" value="false" />
+			<property name="eclipselink.logging.session" value="false" />
+			<property name="eclipselink.logging.exceptions" value="false" />
+			<property name="eclipselink.logging.connection" value="false" />
+			<property name="eclipselink.composite-unit.member" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

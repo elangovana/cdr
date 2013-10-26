@@ -1,0 +1,25 @@
+#content-body-wrapper {
+	display: table;
+	border-collapse: collapse;
+}
+
+#content-body {
+	display: table-row;
+}
+
+#primary-nav,#secondary-nav,#form-content {
+	display: table-cell;
+	padding: 5px 10px;
+}
+
+#primary-nav {
+	font-weight: bold;
+}
+
+#primary-nav,#secondary-nav {
+	width: 20%;
+}
+
+#form-content {
+	width: 60%;
+}
