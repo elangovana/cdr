@@ -40,8 +40,8 @@ public class ServiceRuleConfigTalkTimePromoImpl implements
 
 	@Override
 	public void Save(RuleConfigTalkTime rule) {
-		rule.ruleName = ruleName;
-		rule.lastUpdatedOn = new Date();
+		rule.setRuleName ( ruleName);
+		rule.setLastUpdatedOn(new Date());
 		repository.Save(rule);
 
 	}
@@ -56,11 +56,11 @@ public class ServiceRuleConfigTalkTimePromoImpl implements
 					"No rule %s found in the database, hence using default",
 					ruleName));
 			result = new RuleConfigTalkTime();
-			result.isActive = true;
-			result.ruleName = ruleName;
-			result.promo = "Default Talk Time Rule";
-			result.callDurationInMins = 10;
-			result.calculationPeriodInDays = 10;
+			result.setIsActive (true);
+			result.setRuleName(ruleName);
+			result.setPromo("Default Talk Time Rule");
+			result.setCallDurationInMins(10);
+			result.setCalculationPeriodInDays(10);
 		}
 		return result;
 	}

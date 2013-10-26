@@ -79,10 +79,10 @@ public class DroppedCallsRuleEvaluatorBolt extends BaseRichBolt {
 			// Save the promo
 			if (subMapEntry.getValue().promo != null) {
 				StatsCallPromo dbo = new StatsCallPromo();
-				dbo.callingNumber = mapEntry.getKey();
-				dbo.rule = ruleConfigService.getRuleName();
-				dbo.promo = subMapEntry.getValue().promo;
-				dbo.lastUpdatedOn = new Date();
+				dbo.setCallingNumber(mapEntry.getKey());
+				dbo.setRule(ruleConfigService.getRuleName());
+				dbo.setPromo(subMapEntry.getValue().promo);
+				dbo.setLastUpdatedOn(new Date());
 				repository.Save(dbo);
 
 			}

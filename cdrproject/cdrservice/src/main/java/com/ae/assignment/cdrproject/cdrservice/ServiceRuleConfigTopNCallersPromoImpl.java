@@ -40,8 +40,8 @@ public class ServiceRuleConfigTopNCallersPromoImpl implements
 
 	@Override
 	public void Save(RuleConfigTopNCallers rule) {
-		rule.ruleName = ruleName;
-		rule.lastUpdatedOn = new Date();
+		rule.setRuleName ( ruleName);
+		rule.setLastUpdatedOn( new Date());
 		repository.Save(rule);
 
 	}
@@ -56,11 +56,11 @@ public class ServiceRuleConfigTopNCallersPromoImpl implements
 					"No rule %s found in the database, hence using default",
 					ruleName));
 			result = new RuleConfigTopNCallers();
-			result.isActive = true;
-			result.ruleName = ruleName;
-			result.promo = "Default Top N Rule";
-			result.topCallersPercentage = 80.0f/100.0f;
-			result.calculationPeriodInDays = 10;
+			result.setIsActive ( true);
+			result.setRuleName(ruleName);
+			result.setPromo("Default Top N Rule");
+			result.setTopCallersPercentage ( 80.0f/100.0f);
+			result.setCalculationPeriodInDays (10);
 		}
 		return result;
 	}

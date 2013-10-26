@@ -23,7 +23,7 @@
 <script >
 
 function refreshChart() {
-	createChart("#frmGetPromoStats", "#recentPromosChart", "Rules Promo Shares", "Rules Share");
+	createBarChart("#frmStats", "#recentChart", "Top Callers For Today", "Top Callers", "Calls made" );
 	$("#refreshedDate").html(new Date().toString());
 	   setTimeout(refreshChart,30000);
 
@@ -39,17 +39,19 @@ $(document).ready(function (){
 
 <body>
 
-	<div id="frmGetPromoStats" hidden="true">
-		<s:url action="reports-promo-calls-lastn-retrieveReportData" /></div>
+	<div id="frmStats" hidden="true">
+		<s:url action="reports-top-callers-retrieveReportData" /></div>
 
 	
-	<div id="recentPromosChart"></div>
+	<div id="recentChart"></div>
 
 	<div id="recentPromosChartLog"></div>
-<div id="refeshedON">
+	
+	<div id="refeshedON">
 	Last Updated On:
 	<span id="refreshedDate"></span>
 	</div>
+
 	<%@ include file="menu/reports-menu.htm"%>
 </body>
 </html>

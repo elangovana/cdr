@@ -20,7 +20,9 @@ import backtype.storm.tuple.Tuple;
 import com.ae.assignment.cdrproject.cdrservice.ServiceRuleConfig;
 import com.ae.assignment.cdrproject.cdrservice.model.RuleConfigTopNCallers;
 import com.ae.assignment.cdrproject.cdrservice.model.StatsCallPromo;
+import com.ae.assignment.cdrproject.cdrservice.model.StatsTopNCallers;
 import com.ae.assignment.cdrproject.cdrservice.repository.RepositoryStatsCallPromo;
+import com.ae.assignment.cdrproject.cdrservice.repository.RepositoryStatsTopNCallers;
 import com.ae.assignment.cdrproject.cdrstream.rulesEvaluator.IRuleEvaluator;
 
 public class TopNCallersRuleEvaluatorBolt extends BaseRichBolt {
@@ -42,6 +44,13 @@ public class TopNCallersRuleEvaluatorBolt extends BaseRichBolt {
 	IRuleEvaluator<RuleConfigTopNCallers, HashMap<String, Integer>> ruleEvaluator;
 
 	RepositoryStatsCallPromo repository;
+	
+	RepositoryStatsTopNCallers repositoryTopNCaller;
+
+	public void setRepositoryTopNCaller(
+			RepositoryStatsTopNCallers repositoryTopNCaller) {
+		this.repositoryTopNCaller = repositoryTopNCaller;
+	}
 
 	private final static Logger LOGGER = Logger
 			.getLogger(TopNCallersRuleEvaluatorBolt.class.getName());
@@ -87,11 +96,17 @@ public class TopNCallersRuleEvaluatorBolt extends BaseRichBolt {
 			// Save the promo
 
 			StatsCallPromo dbo = new StatsCallPromo();
-			dbo.callingNumber = entry.getKey();
-			dbo.rule = ruleConfigService.getRuleName();
-			dbo.promo = ruleConfig.getPromo();
-			dbo.lastUpdatedOn = new Date();
+			dbo.setCallingNumber(entry.getKey());
+			dbo.setRule(ruleConfigService.getRuleName());
+			dbo.setPromo(ruleConfig.getPromo());
+			dbo.setLastUpdatedOn(new Date());
 			repository.Save(dbo);
+			
+			StatsTopNCallers dboCallers = new StatsTopNCallers();
+			dboCallers.setTotalCallsMade(entry.getValue());
+			dboCallers.setCallingNumber(entry.getKey());;
+			dboCallers.setLastUpdatedOn(new Date());
+			repositoryTopNCaller.Save(dboCallers);
 
 			subIterator.remove();
 

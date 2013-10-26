@@ -3,7 +3,6 @@ package com.ae.assignment.cdrproject.cdrservice.repository;
 import java.io.Serializable;
 import java.net.UnknownHostException;
 
-
 import org.springframework.stereotype.Repository;
 
 import com.ae.assignment.cdrproject.cdrservice.model.StatsCallPromo;
@@ -29,13 +28,8 @@ public class RepositoryStatsCallPromoImpl extends
 		MongoClient mongoClient = null;
 		DB db;
 		try {
-			mongoClient = new MongoClient(
-					dbProperties
-							.getProperty("eclipselink.nosql.property.mongo.host"),
-					Integer.parseInt(dbProperties
-							.getProperty("eclipselink.nosql.property.mongo.port")));
-			db = mongoClient.getDB(dbProperties
-					.getProperty("eclipselink.nosql.property.mongo.db"));
+			mongoClient = createMongoClient();
+			db = createMongoDb(mongoClient);
 			DBCollection collection = db.getCollection(GetCollectionName());
 
 			// Now the $group operation
@@ -67,5 +61,7 @@ public class RepositoryStatsCallPromoImpl extends
 	
 
 	}
+
+	
 
 }

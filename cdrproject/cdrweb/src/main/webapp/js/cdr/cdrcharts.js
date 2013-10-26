@@ -65,3 +65,94 @@ function createChart (urlId, chartSectionId, bannerText, seriesNameText ) {
     return false;
 
 }
+
+
+
+function createBarChart (urlId, chartSectionId, bannerText, seriesNameText , yNameText) {
+
+    $.getJSON(
+
+    $(urlId).html(),
+
+    function (data) {
+
+        var highChartCategoryData = [];
+        var highChartSeriesData = [];
+        $.each(
+        data,
+
+        function (
+        index,
+        itemData) {
+        	 $.each( this, function ( k,v) {
+        	                   highChartCategoryData.push(k);
+        	                   	highChartSeriesData.push(v);
+        	                console.log(k);
+        	                
+        	            });
+       
+        }
+
+        );
+        $(chartSectionId)
+            .highcharts({
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: bannerText
+                },
+                subtitle: {
+                    text: 'Source: CDR '
+                },
+                xAxis: {
+                    categories: highChartCategoryData,
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: yNameText,
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 100,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: '#FFFFFF',
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: seriesNameText,
+                    data: highChartSeriesData
+                }]
+            });
+
+    });
+
+    return false;
+
+}

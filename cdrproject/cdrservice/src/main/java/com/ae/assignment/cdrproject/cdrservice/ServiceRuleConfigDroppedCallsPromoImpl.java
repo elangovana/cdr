@@ -37,8 +37,8 @@ public class ServiceRuleConfigDroppedCallsPromoImpl implements
 
 	@Override
 	public void Save(RuleConfigDroppedCalls rule) {
-		rule.ruleName = ruleName;
-		rule.lastUpdatedOn = new Date();
+		rule.setRuleName(ruleName);
+		rule.setLastUpdatedOn(new Date());
 		droppedCallsRuleRepository.Save(rule);
 
 	}
@@ -53,11 +53,11 @@ public class ServiceRuleConfigDroppedCallsPromoImpl implements
 					"No rule %s found in the database, hence using default",
 					ruleName));
 			result = new RuleConfigDroppedCalls();
-			result.isActive = true;
-			result.ruleName = ruleName;
-			result.promo = "Default Dropped Rule";
-			result.nbCallsDropped = 10;
-			result.nbCallsDroppedDurationInDays = 10;
+			result.setIsActive(true);
+			result.setRuleName(ruleName);
+			result.setPromo("Default Dropped Rule");
+			result.setNbCallsDropped(10);
+			result.setNbCallsDroppedDurationInDays(10);
 		}
 		return result;
 	}

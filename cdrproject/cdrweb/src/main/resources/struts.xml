@@ -23,6 +23,17 @@
 
 			</result>
 		</action>
+		
+			<action name="reports-top-callers-retrieveReportData"
+			class="com.ae.assignment.cdrproject.cdrweb.action.ReportsTopCallersAction"
+			method="retrieveReportData">
+
+			<result name="success" type="stream">
+				<param name="contentType">text/x-json</param>
+				<param name="inputName">jsonOutput</param>
+
+			</result>
+		</action>
 
 		<!-- <action name="DroppedCallsPromoRule" class="com.ae.assignment.cdrproject.cdrweb.ConfigureDroppedCallsPromoRuleAction"> -->
 		<!-- <result >/jsp/ConfigureDroppedCallsPromoRule.jsp</result> -->

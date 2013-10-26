@@ -25,29 +25,30 @@ public class RuleConfigTalkTime extends RuleConfigBase {
 
 	@Field(name = "_id")
 	@Id
-	public String ruleName;
+	 String ruleName;
 
 	@Basic
-	public String ruleTemplateName;
+	 String ruleTemplateName;
 
 	@Basic
-	public String ruleDescription;
+	 String ruleDescription;
 
 	@Basic
-	public String promo;
+	 String promo;
 
 	@Basic
-	public Boolean isActive;
+	 Boolean isActive;
 
 	@Basic
-	public int callDurationInMins;
+	private
+	 int callDurationInMins;
 
 	@Basic
-	public int calculationPeriodInDays;
+	 int calculationPeriodInDays;
 
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date lastUpdatedOn;
+	 Date lastUpdatedOn;
 
 	public String getRuleName() {
 		return ruleName;
@@ -82,11 +83,11 @@ public class RuleConfigTalkTime extends RuleConfigBase {
 	}
 
 	public int getCallDuration() {
-		return callDurationInMins;
+		return getCallDurationInMins();
 	}
 
 	public void setCallDuration(int callDuration) {
-		this.callDurationInMins = callDuration;
+		this.setCallDurationInMins(callDuration);
 	}
 
 	public int getCalculationPeriodInDays() {
@@ -113,6 +114,14 @@ public class RuleConfigTalkTime extends RuleConfigBase {
 	@Override
 	protected void setRuleTemplateName(String ruleTemplateName) {
 		this.ruleTemplateName = ruleTemplateName;
+	}
+
+	public int getCallDurationInMins() {
+		return callDurationInMins;
+	}
+
+	public void setCallDurationInMins(int callDurationInMins) {
+		this.callDurationInMins = callDurationInMins;
 	}
 
 }

@@ -13,17 +13,41 @@ import org.eclipse.persistence.nosql.annotations.Field;
 import org.eclipse.persistence.nosql.annotations.NoSql;
 
 @Entity
-@NoSql(dataFormat = DataFormatType.MAPPED, dataType="LogsCollection")
+@NoSql(dataFormat = DataFormatType.MAPPED, dataType = "LogsCollection")
 public class FileLog {
-	
-	@Field(name="_id")
+
+	@Field(name = "_id")
 	@Id
-	public String fileName;
-	
+	String fileName;
+
 	@Basic
-	public int linesProcessed;
-	
+	int linesProcessed;
+
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date lastUpdatedOn;
+	Date lastUpdatedOn;
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public int getLinesProcessed() {
+		return linesProcessed;
+	}
+
+	public void setLinesProcessed(int linesProcessed) {
+		this.linesProcessed = linesProcessed;
+	}
+
+	public Date getLastUpdatedOn() {
+		return lastUpdatedOn;
+	}
+
+	public void setLastUpdatedOn(Date lastUpdatedOn) {
+		this.lastUpdatedOn = lastUpdatedOn;
+	}
 }

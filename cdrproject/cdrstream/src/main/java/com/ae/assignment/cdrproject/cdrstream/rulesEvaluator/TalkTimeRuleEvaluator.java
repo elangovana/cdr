@@ -39,14 +39,14 @@ public class TalkTimeRuleEvaluator implements
 
 	@Override
 	public boolean add(Tuple rec) {
-		if (!config.isActive)
+		if (!config.getIsActive())
 			return false;
 
 		Date releaseTime = (Date) rec.getValueByField(CDRFieldNames.releaseTime);
 		String callingNumber = rec.getStringByField(CDRFieldNames.callingNumber);
 		float callDuration  = rec.getFloatByField(CDRFieldNames.callDuration);
 		int periodIndex = DatesSlicer.GetYearlyIndex(releaseTime,
-				config.calculationPeriodInDays);
+				config.getCalculationPeriodInDays());
 
 		HashMap<Integer, RulesResultPerCaller<Integer>> subMap = map.get(callingNumber);
 		// Create Sub Map for the calling Number
@@ -68,8 +68,8 @@ public class TalkTimeRuleEvaluator implements
 		rulesResult.calcSummary += (int) Math.floor(callDuration);
 		
 		// Set promo
-		if (rulesResult.calcSummary >= config.callDurationInMins) {
-			rulesResult.promo = config.promo;
+		if (rulesResult.calcSummary >= config.getCallDurationInMins()) {
+			rulesResult.promo = config.getPromo();
 		}
 
 		return true;

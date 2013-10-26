@@ -34,7 +34,7 @@ public class DroppedCallsRuleEvaluator implements
 
 	@Override
 	public boolean add(Tuple rec) {
-		if (!config.isActive)
+		if (!config.getIsActive())
 			return false;
 
 		Date seizureTime = (Date) rec
@@ -43,7 +43,7 @@ public class DroppedCallsRuleEvaluator implements
 				.getStringByField(CDRFieldNames.callingNumber);
 
 		int periodIndex = DatesSlicer.GetYearlyIndex(seizureTime,
-				config.nbCallsDroppedDurationInDays);
+				config.getNbCallsDroppedDurationInDays());
 
 		HashMap<Integer, RulesResultPerCaller<Integer>> subMap = map.get(callingNumber);
 		// Create Sub Map for the calling Number
@@ -62,8 +62,8 @@ public class DroppedCallsRuleEvaluator implements
 		// Add tuples for ack.
 		rulesResult.tuplesToAck.add(rec);
 		// Set promo
-		if (rulesResult.tuplesToAck.size() >= config.nbCallsDropped) {
-			rulesResult.promo = config.promo;
+		if (rulesResult.tuplesToAck.size() >= config.getNbCallsDropped()) {
+			rulesResult.promo = config.getPromo();
 		}
 
 		return true;

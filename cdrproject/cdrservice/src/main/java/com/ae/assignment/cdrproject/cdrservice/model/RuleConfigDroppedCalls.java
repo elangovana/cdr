@@ -20,33 +20,34 @@ public class RuleConfigDroppedCalls extends RuleConfigBase {
 
 	@Field(name = "_id")
 	@Id
-	public String ruleName;
+	String ruleName;
 
 	@Basic
 	protected String ruleTemplateName;
 
 	@Basic
-	public String ruleDescription;
+	String ruleDescription;
 
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date lastUpdatedOn;
+	Date lastUpdatedOn;
 
 	public RuleConfigDroppedCalls() {
 		setRuleTemplateName(TEMPLATE_NAME);
 	}
 
 	@Basic
-	public String promo;
+	String promo;
 
 	@Basic
-	public Boolean isActive;
+	private
+	Boolean isActive;
 
 	@Basic
-	public int nbCallsDropped;
+	int nbCallsDropped;
 
 	@Basic
-	public int nbCallsDroppedDurationInDays;
+	int nbCallsDroppedDurationInDays;
 
 	public Boolean getIsActive() {
 		return isActive;

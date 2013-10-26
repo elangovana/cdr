@@ -24,29 +24,29 @@ public class RuleConfigTopNCallers extends RuleConfigBase {
 
 	@Field(name = "_id")
 	@Id
-	public String ruleName;
+	String ruleName;
 
 	@Basic
-	public String ruleDescription;
+	String ruleDescription;
 
 	@Basic
-	public String ruleTemplateName;
+	String ruleTemplateName;
 
 	@Basic
-	public String promo;
+	String promo;
 
 	@Basic
-	public Boolean isActive;
+	Boolean isActive;
 
 	@Basic
-	public float topCallersPercentage;
+	float topCallersPercentage;
 
 	@Basic
-	public int calculationPeriodInDays;
+	int calculationPeriodInDays;
 
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date lastUpdatedOn;
+	Date lastUpdatedOn;
 
 	public String getRuleDescription() {
 		return ruleDescription;

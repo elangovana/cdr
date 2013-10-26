@@ -35,7 +35,7 @@ public class ServiceLogImpl implements ServiceLog , Serializable{
 		int result = 0;
 		try {
 			dbo = repository.findById(fileName);
-			result = dbo.linesProcessed;
+			result = dbo.getLinesProcessed();
 			
 		} catch (javax.persistence.NoResultException ex) {
 			LOGGER.log(Level.INFO, String.format(
@@ -50,8 +50,8 @@ public class ServiceLogImpl implements ServiceLog , Serializable{
 	public void putLinesRead(String fileName, int linesReadSoFar)
 	{
 		FileLog dbo = new FileLog();
-		dbo.fileName = fileName;
-		dbo.linesProcessed = linesReadSoFar;
+		dbo.setFileName(fileName);
+		dbo.setLinesProcessed(linesReadSoFar) ;
 		repository.Save(dbo);
 		
 	}

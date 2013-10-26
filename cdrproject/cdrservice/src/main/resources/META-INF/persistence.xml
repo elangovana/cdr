@@ -11,6 +11,7 @@
 		<class>com.ae.assignment.cdrproject.cdrservice.model.RuleConfigTopNCallers </class>
 		<class>com.ae.assignment.cdrproject.cdrservice.model.FileLog </class>
 		<class>com.ae.assignment.cdrproject.cdrservice.model.StatsCallPromo </class>
+		<class>com.ae.assignment.cdrproject.cdrservice.model.StatsTopNCallers </class>
 		<properties>
 			<property name="eclipselink.target-database"
 				value="org.eclipse.persistence.nosql.adapters.mongo.MongoPlatform" />

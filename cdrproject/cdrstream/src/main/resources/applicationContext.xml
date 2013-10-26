@@ -106,6 +106,10 @@
 			<ref bean="repositoryStatsCallPromoImpl" />
 		</property>
 		
+		<property name="repositoryTopNCaller">
+			<ref bean="repositoryStatsTopNCallersImpl" />
+		</property>
+		
 		<constructor-arg name="emitFrequencyInSec">
 			<value>${Rule.FlushIntervalInSec}</value>
 		</constructor-arg>

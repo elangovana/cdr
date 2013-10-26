@@ -2,6 +2,7 @@ package com.ae.assignment.cdrproject.cdrservice.repository;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -15,6 +16,9 @@ import javax.persistence.Query;
 
 import org.eclipse.persistence.nosql.annotations.NoSql;
 import org.springframework.stereotype.Repository;
+
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 
 @Repository
 public abstract class AbstractRepository<T extends Object, indexType>
@@ -49,6 +53,12 @@ public abstract class AbstractRepository<T extends Object, indexType>
 	}
 
 	private Class<T> entityClass;
+
+	static final String ECLIPSELINK_NOSQL_PROPERTY_MONGO_HOST = "eclipselink.nosql.property.mongo.host";
+
+	static final String ECLIPSELINK_NOSQL_PROPERTY_MONGO_PORT = "eclipselink.nosql.property.mongo.port";
+
+	static final String ECLIPSELINK_NOSQL_PROPERTY_MONGO_DB = "eclipselink.nosql.property.mongo.db";
 
 	protected Class<T> getEntityClass() {
 		return entityClass;
@@ -121,4 +131,17 @@ public abstract class AbstractRepository<T extends Object, indexType>
 		return fields;
 	}
 
+	
+	protected DB createMongoDb(MongoClient mongoClient) {
+		return mongoClient.getDB(dbProperties
+				.getProperty(AbstractRepository.ECLIPSELINK_NOSQL_PROPERTY_MONGO_DB));
+	}
+
+	protected MongoClient createMongoClient() throws UnknownHostException {
+		return new MongoClient(
+				dbProperties
+						.getProperty(AbstractRepository.ECLIPSELINK_NOSQL_PROPERTY_MONGO_HOST),
+				Integer.parseInt(dbProperties
+						.getProperty(AbstractRepository.ECLIPSELINK_NOSQL_PROPERTY_MONGO_PORT)));
+	}
 }

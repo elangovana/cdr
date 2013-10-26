@@ -41,7 +41,7 @@ public class TopNCallersRuleEvaluator implements
 
 	@Override
 	public boolean add(Tuple rec) {
-		if (!ruleConfig.isActive)
+		if (!ruleConfig.getIsActive())
 			return false;
 
 		String callingNumber = rec
