@@ -84,10 +84,11 @@ function createBarChart (urlId, chartSectionId, bannerText, seriesNameText , yNa
         function (
         index,
         itemData) {
+        	 i=0;
         	 $.each( this, function ( k,v) {
-        	                   highChartCategoryData.push(k);
-        	                   	highChartSeriesData.push(v);
-        	                console.log(k);
+        		 if (i==0) highChartCategoryData.push(v);
+        		 if (i==1) 	highChartSeriesData.push(v);
+        		 i++;
         	                
         	            });
        

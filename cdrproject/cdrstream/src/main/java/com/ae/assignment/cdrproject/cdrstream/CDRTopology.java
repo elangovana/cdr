@@ -30,6 +30,13 @@ public class CDRTopology {
 	static int emitSleepTimeInMillSec;
 	static int approximateInsertSize;
 	static float falsePostiveRate;
+	static int nbInstancesCDRWokload;
+	static int nbInstancesDeDuplicateFilter;
+	static int nbInstancesDropCallFilter;
+	static int nbInstancesFileLineSplitter;
+	static int nbInstancesTalkTimeRuleEvaluator;
+	static int nbInstancesTopCallersEvaluator;
+	static int nbInstancesDropedCallersEvaluator;
 
 	public static void main(String[] args) throws Exception {
 
@@ -81,35 +88,35 @@ public class CDRTopology {
 				TopologyConstants.FILES_NAMES_SPOUT);
 
 		builder.setBolt(TopologyConstants.CDR_FILE_LINE_SPLITTER,
-				new CDRRecordCreator(), 8).shuffleGrouping(
+				new CDRRecordCreator(), nbInstancesFileLineSplitter).shuffleGrouping(
 				TopologyConstants.CDR_WORKLOAD_GEN);
 
 		builder.setBolt(
 				TopologyConstants.DUPLICATE_CALL_FILTER,
 				new DuplicateRecordFilterBolt(approximateInsertSize,
-						falsePostiveRate), 8).fieldsGrouping(
+						falsePostiveRate), nbInstancesDeDuplicateFilter).fieldsGrouping(
 				TopologyConstants.CDR_FILE_LINE_SPLITTER,
 				new Fields(CDRFieldNames.callingNumber,
 						CDRFieldNames.calledNumber));
 
 		builder.setBolt(TopologyConstants.DROPPED_CALLS_FILTER,
-				new DroppedCallsFilterBolt(), 8).shuffleGrouping(
+				new DroppedCallsFilterBolt(), nbInstancesDropCallFilter).shuffleGrouping(
 				TopologyConstants.DUPLICATE_CALL_FILTER);
 
 		builder.setBolt(TopologyConstants.TALK_TIME_RULE_EVALUATOR_BOLT,
-				appContext.getBean(TalkTimeRuleEvaluatorBolt.class), 8)
+				appContext.getBean(TalkTimeRuleEvaluatorBolt.class), nbInstancesTalkTimeRuleEvaluator)
 				.fieldsGrouping(TopologyConstants.DUPLICATE_CALL_FILTER,
 						new Fields(CDRFieldNames.callingNumber))
 				.allGrouping(TopologyConstants.StreamIDRules);
 
 		builder.setBolt(TopologyConstants.DROPPED_CALLS_RULE_EVALUATOR_BOLT,
-				appContext.getBean(DroppedCallsRuleEvaluatorBolt.class), 8)
+				appContext.getBean(DroppedCallsRuleEvaluatorBolt.class), nbInstancesDropedCallersEvaluator)
 				.fieldsGrouping(TopologyConstants.DROPPED_CALLS_FILTER,
 						new Fields(CDRFieldNames.callingNumber))
 				.allGrouping(TopologyConstants.StreamIDRules);
 
 		builder.setBolt(TopologyConstants.StreamIDRuleTopNCallers,
-				appContext.getBean(TopNCallersRuleEvaluatorBolt.class), 8)
+				appContext.getBean(TopNCallersRuleEvaluatorBolt.class), nbInstancesTopCallersEvaluator)
 				.fieldsGrouping(TopologyConstants.DUPLICATE_CALL_FILTER,
 						new Fields(CDRFieldNames.callingNumber))
 				.allGrouping(TopologyConstants.StreamIDRules);
@@ -139,6 +146,38 @@ public class CDRTopology {
 
 		falsePostiveRate = Float.parseFloat(prop
 				.getProperty("DuplicateCheck.FalsePostiveRate"));
+		
+		nbInstancesCDRWokload = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesCDRWWorkLoadGen"));
+		
+		nbInstancesDeDuplicateFilter = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesDeDuplicateFilter"));
+		
+		nbInstancesDropCallFilter = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesDropCallFilter"));
+		
+		nbInstancesDropedCallersEvaluator = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesDropedCallersEvaluator"));
+		
+		nbInstancesFileLineSplitter = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesFileLineSplitter"));
+		
+		nbInstancesTalkTimeRuleEvaluator = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesTalkTimeRuleEvaluator"));
+		
+		nbInstancesTopCallersEvaluator = Integer
+				.parseInt(prop
+						.getProperty("Topology.InstancesTopCallersEvaluator"));
+		
+		
+		
+
 
 	}
 

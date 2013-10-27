@@ -11,7 +11,7 @@
 	<groupId>com.ae.assignment</groupId>
 	<artifactId>cdrstream</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cdrstream Maven Mojo</name>
+	<name>cdrstream</name>
 	<url>http://maven.apache.org</url>
 	<repositories>
 		<repository>
@@ -56,7 +56,7 @@
 			<artifactId>storm</artifactId>
 			<version>0.8.2</version>
 		
-<!-- 		 <scope>provided</scope> -->
+		 <scope>provided</scope> 
 			
 		</dependency>
 		<dependency>
