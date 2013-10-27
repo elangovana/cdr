@@ -16,11 +16,11 @@ Maven build and Run Commands
 	2. Run the projects
 	To run stream
 		cd ./cdrstream
-		mvn exec:java exec:java -Dexec.classpathScope=compile -Dexec.mainClass=com.ae.assignment.cdrproject.cdrstream.CDRTopology
+		mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=com.ae.assignment.cdrproject.cdrstream.CDRTopology
 	
 	To Run Web in standalone Tomcat 7
 	   cd ./cdrweb
-	   mvn tomcat7:run
+	   mvn compile tomcat7:run
 	   Access the website on http://localhost:9091
 	   ** Any issues with port number, the port can be changed in pom.xml
 	  ......
