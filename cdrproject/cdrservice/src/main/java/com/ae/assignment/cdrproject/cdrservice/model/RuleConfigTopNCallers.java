@@ -108,7 +108,7 @@ public class RuleConfigTopNCallers extends RuleConfigBase {
 
 	@Override
 	public void setRuleName(String ruleName) {
-		this.ruleTemplateName = ruleName;
+		this.ruleName = ruleName;
 	}
 
 	@Override
