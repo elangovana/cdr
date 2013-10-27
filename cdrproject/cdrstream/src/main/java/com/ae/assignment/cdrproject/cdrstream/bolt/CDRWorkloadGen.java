@@ -23,7 +23,7 @@ public class CDRWorkloadGen extends BaseRichBolt {
 	OutputCollector _collector;
 	BufferedReader _buffer;
 	ServiceLog logService;
-	
+
 	public void setLogService(ServiceLog logService) {
 		this.logService = logService;
 	}
@@ -72,7 +72,7 @@ public class CDRWorkloadGen extends BaseRichBolt {
 				//TODO check if this needs to be anchored to the fileName tuple
 				_collector.emit(new Values(sentence));
 				linesRead++;
-				logService.putLinesRead(fileName, linesRead);
+				logService.putLinesRead(fileName, linesRead);				
 				Utils.sleep(sleepTimeInMillSec);
 			}
 

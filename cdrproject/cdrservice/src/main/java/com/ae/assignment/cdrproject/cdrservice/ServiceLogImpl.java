@@ -1,6 +1,7 @@
 package com.ae.assignment.cdrproject.cdrservice;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,8 +53,11 @@ public class ServiceLogImpl implements ServiceLog , Serializable{
 		FileLog dbo = new FileLog();
 		dbo.setFileName(fileName);
 		dbo.setLinesProcessed(linesReadSoFar) ;
+		dbo.setLastUpdatedOn(new Date());
 		repository.Save(dbo);
 		
 	}
+	
+	
 
 }

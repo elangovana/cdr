@@ -26,6 +26,18 @@ public class FileLog {
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
 	Date lastUpdatedOn;
+	
+	@Basic
+	@Temporal(TemporalType.TIMESTAMP)
+	Date createdUpdatedOn;
+
+	public Date getCreatedUpdatedOn() {
+		return createdUpdatedOn;
+	}
+
+	public void setCreatedUpdatedOn(Date createdUpdatedOn) {
+		this.createdUpdatedOn = createdUpdatedOn;
+	}
 
 	public String getFileName() {
 		return fileName;
