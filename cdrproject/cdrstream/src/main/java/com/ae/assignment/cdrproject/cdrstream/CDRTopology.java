@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
+import backtype.storm.generated.StormTopology;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
 
@@ -38,17 +39,19 @@ public class CDRTopology {
 	static int nbInstancesTopCallersEvaluator;
 	static int nbInstancesDropedCallersEvaluator;
 
+	static ApplicationContext appContext = new ClassPathXmlApplicationContext(
+			"applicationContext.xml");
+	
 	public static void main(String[] args) throws Exception {
 
 		if (args != null && args.length > 1) {
 			printUsage();
 			throw new IllegalArgumentException("Invalid Arguments");
 		}
-		LoadProperties();
+		
 
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(
-				"applicationContext.xml");
-		TopologyBuilder builder = buildTopology(args, appContext);
+		
+		StormTopology stormTopology = buildTopology(args);
 
 		Config conf = new Config();
 		conf.setDebug(_debug);
@@ -57,13 +60,13 @@ public class CDRTopology {
 			conf.setNumWorkers(3);
 
 			StormSubmitter.submitTopology(args[0], conf,
-					builder.createTopology());
+					stormTopology);
 		} else {
 			conf.setMaxTaskParallelism(3);
 
 			LocalCluster cluster = new LocalCluster();
 			cluster.submitTopology("CDRTopology", conf,
-					builder.createTopology());
+					stormTopology);
 
 			Thread.sleep(_runforNsec * 1000);
 
@@ -72,9 +75,8 @@ public class CDRTopology {
 
 	}
 
-	private static TopologyBuilder buildTopology(String[] args,
-			ApplicationContext appContext) {
-
+	public static StormTopology buildTopology(String[] args) throws Exception {
+		LoadProperties();
 		TopologyBuilder builder = new TopologyBuilder();
 
 		builder.setSpout(TopologyConstants.FILES_NAMES_SPOUT,
@@ -121,7 +123,7 @@ public class CDRTopology {
 						new Fields(CDRFieldNames.callingNumber))
 				.allGrouping(TopologyConstants.StreamIDRules);
 
-		return builder;
+		return builder.createTopology();
 	}
 
 	static void printUsage() {
@@ -174,8 +176,6 @@ public class CDRTopology {
 		nbInstancesTopCallersEvaluator = Integer
 				.parseInt(prop
 						.getProperty("Topology.InstancesTopCallersEvaluator"));
-		
-		
 		
 
 
