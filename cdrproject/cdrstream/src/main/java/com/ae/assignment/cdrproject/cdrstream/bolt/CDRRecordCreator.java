@@ -26,7 +26,7 @@ public class CDRRecordCreator extends BaseRichBolt {
 
 	OutputCollector collector;
 
-	static final SimpleDateFormat dateFormatter = new SimpleDateFormat(
+	final SimpleDateFormat dateFormatter = new SimpleDateFormat(
 			CDRFieldNames.DateTimeFormat, Locale.ENGLISH);
 
 	@Override
