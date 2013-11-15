@@ -48,7 +48,7 @@ public class ReportsTopCallersAction extends ActionSupport {
 	public String retrieveReportData() throws Exception {
 
 		latestStatsTopCallers = repositoryStatsTopNCallersImpl
-				.reportTopCallers(currentDate(),  currentDate(),10);
+				.reportTopCallers(addDays(currentDate(), -7), currentDate(),10);
 	
 		return SUCCESS;
 	}
@@ -62,4 +62,13 @@ public class ReportsTopCallersAction extends ActionSupport {
 		return calender.getTime();
 	}
 	
+	Date addDays(Date date, int addDays )
+	{
+		calender.setTime(date);
+		calender.set(Calendar.HOUR_OF_DAY, 0); //anything 0 - 23
+		calender.set(Calendar.MINUTE, 0);
+		calender.set(Calendar.SECOND, 0);
+		calender.add(Calendar.DATE, addDays);
+		return calender.getTime();
+	}
 }
