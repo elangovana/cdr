@@ -17,21 +17,21 @@
 	<!-- Listeners -->
 
 
-<!-- 	<context-param> -->
-<!-- 		<param-name>log4jConfigLocation</param-name> -->
-<!-- 		<param-value>/WEB-INF/log4j.properties</param-value> -->
-<!-- 	</context-param> -->
+	<!-- <context-param> -->
+	<!-- <param-name>log4jConfigLocation</param-name> -->
+	<!-- <param-value>/WEB-INF/log4j.properties</param-value> -->
+	<!-- </context-param> -->
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<listener>
-  <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-</listener>
-<!-- Use this for servelet 2.4 containaer complaince -->
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<!-- Use this for servelet 2.4 containaer complaince -->
 
 
 	<filter>
@@ -71,7 +71,7 @@
 		<load-on-startup>5</load-on-startup>
 	</servlet>
 
-	
+
 
 
 	<!-- Welcome file lists -->
@@ -81,4 +81,25 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Secure Application</web-resource-name>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+
+		<auth-constraint>
+			<role-name>generaluser</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>file</realm-name>
+	</login-config>
+
+	<security-role>
+		<role-name>generaluser</role-name>
+	</security-role>
 </web-app>
