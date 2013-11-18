@@ -1,5 +1,6 @@
 package com.ae.assignment.cdrproject.cdrservice.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -15,7 +16,7 @@ import org.eclipse.persistence.nosql.annotations.NoSql;
 
 @Entity
 @NoSql(dataFormat = DataFormatType.MAPPED, dataType = "TopNCallersCollection")
-public class StatsTopNCallers {
+public class StatsTopNCallers  implements Serializable {
 	public String getCallingNumber() {
 		return callingNumber;
 	}

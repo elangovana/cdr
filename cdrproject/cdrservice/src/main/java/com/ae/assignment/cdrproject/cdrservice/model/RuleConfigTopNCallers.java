@@ -1,5 +1,6 @@
 package com.ae.assignment.cdrproject.cdrservice.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -14,7 +15,7 @@ import org.eclipse.persistence.nosql.annotations.NoSql;
 
 @Entity
 @NoSql(dataFormat = DataFormatType.MAPPED, dataType = "ConfigCollection")
-public class RuleConfigTopNCallers extends RuleConfigBase {
+public class RuleConfigTopNCallers extends RuleConfigBase implements Serializable {
 
 	public static final String TEMPLATE_NAME = "RuleTemplateTopNCallers";
 

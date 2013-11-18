@@ -1,5 +1,6 @@
 package com.ae.assignment.cdrproject.cdrservice.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -14,7 +15,7 @@ import org.eclipse.persistence.nosql.annotations.NoSql;
 
 @Entity
 @NoSql(dataFormat = DataFormatType.MAPPED, dataType = "LogsCollection")
-public class FileLog {
+public class FileLog implements Serializable {
 
 	@Field(name = "_id")
 	@Id
